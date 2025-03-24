@@ -54,3 +54,24 @@ fastlinks/
 
 Доступные эндпоинты:  
 
+Эндпоинты аутентификации (Auth) (стандартные из библиотеки `fastapi-users`)
+```
+    POST /auth/jwt/login: Выполняет аутентификацию пользователя и выдает JWT токен.
+    POST /auth/jwt/logout: Завершает сеанс пользователя и аннулирует JWT токен.
+    POST /auth/register: Регистрирует нового пользователя.
+    POST /auth/forgot-password: Запрашивает сброс пароля.
+    POST /auth/reset-password: Сбрасывает пароль пользователя.
+    POST /auth/request-verify-token: Запрашивает токен для верификации.
+    POST /auth/verify: Верифицирует пользователя по токену.
+```
+Эндпоинты управления ссылками (Links)
+```
+    POST /links/shorten: Создает короткую ссылку для оригинального URL.
+    GET /links/{short_code}: Перенаправляет на оригинальный адрес по короткому коду.
+    DELETE /links/{short_code}: Удаляет короткую ссылку.
+    PUT /links/{short_code}: Обновляет существующую короткую ссылку.
+    GET /links/{short_code}/stats: Возвращает статистику использования.
+    POST /links/shorten/custom: Создает пользовательскую короткую ссылку.
+    GET /links/search: Ищет короткую ссылку.
+````
+
