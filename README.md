@@ -44,7 +44,10 @@ fastlinks/
 - python 3.9  
 - PostgreSQL17  
 - Redis  7.2.7
-- FasAPI  
+- FasAPI
+- sqlalchemy  
+- Alembic
+- Pydantic
 ### Функционал сервиса
 
 Скринкаст 
