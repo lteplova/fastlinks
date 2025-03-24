@@ -80,3 +80,36 @@ fastlinks/
     GET /links/search: Ищет короткую ссылку по указанному оригинальному URL
 ````
 
+### Описание структры БД:
+
+содержит две основные таблицы:
+1. user
+```
+    id = Column(UUID, primary_key=True, index=True)  # Уникальный идентификатор пользователя
+    email = Column(String, unique=True, nullable=False)  # Уникальный адрес электронной почты
+    username = Column(String, unique=True, nullable=False)  # Уникальное имя пользователя
+    hashed_password = Column(String, nullable=False)  # Хешированный пароль пользователя
+    registered_at = Column(DateTime(timezone=True), default=func.now())  # Дата регистрации
+    is_active = Column(Boolean, default=True, nullable=False)  # Активен ли пользователь
+    is_superuser = Column(Boolean, default=False, nullable=False)  # Является ли пользователь суперпользователем
+    is_verified = Column(Boolean, default=False, nullable=False)  # Подтвержден ли адрес электронной почты
+    links = relationship("Link", back_populates="user", cascade="all, delete-orphan")  # Связь с таблицей links
+
+```
+
+
+2. links
+```
+    id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))  # Уникальный идентификатор ссылки
+    original_url = Column(String, nullable=False)  # Оригинальный URL, который сокращается
+    short_code = Column(String, unique=True, nullable=False)  # Уникальный короткий код для ссылки
+    custom_alias = Column(String, unique=True, nullable=True)  # Алиас для ссылки
+    clicks = Column(Integer, default=0)  # Количество кликов/переходов по короткой ссылке
+    created_at = Column(DateTime(timezone=True), default=func.now())  # Дата создания ссылки
+    last_accessed = Column(DateTime(timezone=True), nullable=True)  # Дата последнего перехода по ссылке
+    expires_at = Column(DateTime(timezone=True), nullable=True)  # Дата истечения срока действия ссылки
+    user_id = Column(UUID, ForeignKey("user.id"), nullable=True)  # Идентификатор пользователя, создавшего ссылку
+    user = relationship("User", back_populates="links")  # Связь с таблицей пользователей links
+```
+
+
