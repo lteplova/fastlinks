@@ -1,7 +1,12 @@
 # API-сервис сокращения ссылок fastlink
 
 ## Функционал сервиса
-Скринкаст:
+Скринкасты с демонстрацией работы:
+
+[01](https://disk.yandex.ru/i/0KNqFsSbww-UPA)   
+[02](https://disk.yandex.ru/i/eorWRw0Ux17j0Q)    
+[03](https://disk.yandex.ru/i/eorWRw0Ux17j0Q)  
+
 
 ### Установка сервиса 
 
