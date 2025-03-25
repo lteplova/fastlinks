@@ -27,7 +27,8 @@ class UserUpdate(schemas.BaseUserUpdate):
 
 class LinkCreate(BaseModel):
     original_url: HttpUrl
-    custom_alias: None
+    custom_alias: str
+    clicks: None
     expires_at: datetime
 
 
@@ -49,13 +50,12 @@ class LinkUpdate(BaseModel):
 class LinkStatistics(BaseModel):
     original_url: str
     short_code: str
-    created_at: datetime
     clicks: int
     last_accessed: datetime = None
     expires_at: datetime = None
 
 
-class CustomLinkCreate(BaseModel):
+class CustomAlias(BaseModel):
     original_url: HttpUrl
     short_code: str
     custom_alias: str
