@@ -2,7 +2,6 @@ import random
 import string
 import uuid
 from sqlalchemy import update
-from typing import List
 from urllib.parse import unquote
 from datetime import datetime, timezone
 from dateutil.relativedelta import relativedelta
@@ -11,6 +10,10 @@ from fastapi import HTTPException, status
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
 from models.models import Link
+
+import logging
+logging.basicConfig()
+logging.getLogger("sqlalchemy.engine").setLevel(logging.INFO)
 
 
 def generate_short_code(length: int = 6) -> str:
@@ -24,6 +27,8 @@ async def create_short_url(db, original_url, user_id, alias=None, expires_at=Non
     if expires_at is None:
         expires_at = created_at + relativedelta(months=1)
 
+    if alias == "string":
+        alias = None
     new_url = Link(
         original_url=original_url,
         short_code=generate_short_code() if not alias else alias,
@@ -45,7 +50,10 @@ async def create_short_url(db, original_url, user_id, alias=None, expires_at=Non
 
         if "links_short_code_key" in error_message or "links_custom_alias_key" in error_message:
             if alias:
-                raise ValueError(f"The alias '{alias}' already exists.")
+                raise  HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Такая ссылка '{alias}' уже существует"
+            )
 
             raise Exception("Short code collision, please try again.")
 
@@ -57,14 +65,15 @@ async def get_original_url(db: AsyncSession, short_code: str) -> Link:
     return result.scalars().first()
 
 
-async def update_link_statistics(db: AsyncSession, link_id: uuid.UUID):
+
+async def update_link_statistics(db: AsyncSession, short_code: str):
     now = datetime.now(timezone.utc)
 
     now_naive = now.replace(tzinfo=None)
 
     query = (
         update(Link)
-        .where(Link.id == link_id)
+        .where(Link.short_code == short_code)
         .values(
             clicks=Link.clicks + 1,
             last_accessed=now_naive
@@ -155,8 +164,7 @@ async def update_short_url(
 
 async def get_link_stats(db: AsyncSession, short_code: str) -> Link:
     result = await db.execute(select(Link).where(Link.short_code == short_code))
-    link = result.scalars().first()
-
+    link = result.scalars().all()
     return link
 
 
@@ -229,24 +237,7 @@ async def create_custom_short(
         raise Exception(f"Не удалось создать короткую ссылку: {error_message}") from e
 
 
-async def search_links(db: AsyncSession, original_url: str) -> List[Link]:
+async def search_short(db: AsyncSession, original_url: str) -> Link:
     decoded_url = unquote(original_url)
-    normalized_url = decoded_url.lower().rstrip('/')
-    stmt = select(Link).where(Link.decoded_url.ilike(normalized_url))
-    result = await db.execute(stmt)
+    result = await db.execute(select(Link).where(Link.original_url == decoded_url))
     return result.scalars().all()
-
-
-async def update_expires_at(db: AsyncSession, short_code: str, new_expires_at: datetime) -> Link:
-    stmt = select(Link).where(Link.short_code == short_code)
-    result = await db.execute(stmt)
-    link = result.scalars().first()
-
-    if not link:
-        raise HTTPException(status_code=404, detail="Ссылка не найдена")
-
-    link.expires_at = new_expires_at
-    await db.commit()
-    await db.refresh(link)
-
-    return link
