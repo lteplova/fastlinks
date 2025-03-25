@@ -10,8 +10,8 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-ENV PYTHONUNBUFFERED=1
+EXPOSE 8000
 
-RUN chmod a+x docker/*.sh
+ENV PYTHONUNBUFFERED=1
 
 CMD ["python", "main.py"]
