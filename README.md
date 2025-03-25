@@ -110,4 +110,7 @@ fastlinks/
     user = relationship("User", back_populates="links")  # Связь с таблицей пользователей links
 ```
 
+Локальный деплой
+
+﻿<img width="1223" alt="image" src="https://github.com/user-attachments/assets/9a44b8fb-0dbc-4898-904d-3bb996ec5c38" />
 
