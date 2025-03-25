@@ -13,7 +13,7 @@
 ### Установка сервиса 
 
 установка:  
-docker-compose up --build
+`docker-compose up --build`
 
 ### Структура проекта:
 fastlinks/
