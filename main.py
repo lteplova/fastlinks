@@ -18,4 +18,4 @@ app.include_router(auth_router)
 app.include_router(links_router, prefix="/links", tags=["links"])
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", reload=True, host="0.0.0.0", port=APP_PORT, log_level="debug")
+    uvicorn.run("main:app", reload=True, host="0.0.0.0", port=8000, log_level="debug")
