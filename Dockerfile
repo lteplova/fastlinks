@@ -14,4 +14,6 @@ EXPOSE 8000
 
 ENV PYTHONUNBUFFERED=1
 
+RUN chmod a+x docker/*.sh
+
 CMD ["python", "main.py"]
