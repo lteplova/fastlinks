@@ -21,18 +21,29 @@ services:
     ports:
       - "6379:6379"
 
+  # app:
+  #   build: .
+  #   container_name: fastlinks
+  #   restart: always
+  #   depends_on:
+  #     - db
+  #     - redis
+  #   ports:
+  #     - "8000:8000"
+  #   env_file:
+  #     - .env
+  #   volumes:
+  #     - .:/app
+
   app:
-    build: .
-    container_name: fastlinks
-    restart: always
-    depends_on:
-      - db
-      - redis
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
-    env_file:
-      - .env
     volumes:
       - .:/app
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
+
 volumes:
   postgres_data:
