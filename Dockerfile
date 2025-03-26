@@ -20,4 +20,4 @@ RUN chmod a+x docker/*.sh
  # uvicorn main:app --host 0.0.0.0 --port 8000 --log-level info
 # CMD uvicorn main:app --host 0.0.0.0 --port $PORT
 
-CMD gunicorn main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind=0.0.0.0:8000
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--log-level", "info"]
