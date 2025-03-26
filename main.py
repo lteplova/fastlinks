@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 from auth.db import create_db_and_tables
 from routers.auth_routes import router as auth_router
 from routers.links import router as links_router
+from config import APP_PORT
 import uvicorn
 
 @asynccontextmanager
