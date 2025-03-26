@@ -1,8 +1,8 @@
 FROM python:3.9
 
-RUN mkdir /fastlinks:
+RUN mkdir /app:
 
-WORKDIR /fastlinks
+WORKDIR /app
 
 COPY requirements.txt .
 
@@ -20,4 +20,4 @@ RUN chmod a+x docker/*.sh
  # uvicorn main:app --host 0.0.0.0 --port 8000 --log-level info
 # CMD uvicorn main:app --host 0.0.0.0 --port $PORT
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--log-level", "info"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--log-level", "debug"]
