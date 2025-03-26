@@ -45,6 +45,7 @@ fastlinks/
 - PostgreSQL17  
 - Redis  7.2.7
 - FasAPI
+- JWT
 - sqlalchemy  
 - Alembic
 - Pydantic
