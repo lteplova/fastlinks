@@ -13,5 +13,3 @@ REDIS_PORT = os.getenv("REDIS_PORT")
 
 DATABASE_URL_A = f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 DATABASE_URL = f"postgresql+asyncpg://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
