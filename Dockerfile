@@ -19,16 +19,17 @@ FROM python:3.9
 # CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--log-level", "info"]
 
 
-WORKDIR /app
 
-COPY requirements.txt /app/
+RUN mkdir /fastapi_app
 
-RUN pip install --upgrade pip && pip install -r requirements.txt
+WORKDIR /fastapi_app
 
-COPY . /app/
+COPY requirements.txt .
+
+RUN pip install -r requirements.txt
+
+COPY . .
 
 RUN chmod a+x docker/*.sh
 
-EXPOSE 8000
-
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD uvicorn main:app --host 0.0.0.0 --port 8000
