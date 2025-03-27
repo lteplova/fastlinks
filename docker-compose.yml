@@ -4,6 +4,10 @@ services:
   db:
     image: postgres:17
     container_name: postgres_db
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_DB: ${DB_NAME}
     command: postgres_db -p 1221
     expose:
       - 1221
